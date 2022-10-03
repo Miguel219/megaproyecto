@@ -134,3 +134,4 @@ segmentation/
 segmentation-loveDA/
 models/
 data-sentinel-2/
+data-non-sentinel-2/
