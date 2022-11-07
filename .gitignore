@@ -129,11 +129,9 @@ dmypy.json
 .pyre/
 
 # Custom 
-data/
-segmentation/
-segmentation-loveDA/
-models/
-data-sentinel-2/
-data-non-sentinel-2/
-data-insivumeh/
-images/
+data_model_gen/data_insivumeh/
+data_model_gen/images/
+data_model_gen/data_orthomosaic/
+data_model_gen/results/guatemala/data_merged_all_gt_map_final.csv
+segmentation/segmentation-loveDA/
+segmentation/models/
