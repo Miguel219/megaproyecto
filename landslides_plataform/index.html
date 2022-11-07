@@ -1,0 +1,593 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css"><link rel="stylesheet" href="css/L.Control.Locate.min.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/MarkerCluster.css">
+        <link rel="stylesheet" href="css/MarkerCluster.Default.css">
+        <link rel="stylesheet" href="css/leaflet-control-geocoder.Geocoder.css">
+        <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
+        <title></title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script><script src="js/L.Control.Locate.min.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/leaflet-control-geocoder.Geocoder.js"></script>
+        <script src="js/leaflet.markercluster.js"></script>
+        <script src="data/Deslizamientos_1.js"></script>
+        <script src="data/RandomForestSusceptibilidadClases_2.js"></script>
+        <script src="data/XGBoostSusceptibilidadClases_3.js"></script>
+        <script src="data/SupportVectorMachineSusceptibilidadClases_4.js"></script>
+        <script src="data/LogisticRegressionSusceptibilidadClases_5.js"></script>
+        <script>
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:28, minZoom:1
+        })
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        L.control.locate({locateOptions: {maxZoom: 19}}).addTo(map);
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+            if (bounds_group.getLayers().length) {
+                map.fitBounds(bounds_group.getBounds());
+            }
+            map.setMaxBounds(map.getBounds());
+        }
+        map.createPane('pane_OSMStandard_0');
+        map.getPane('pane_OSMStandard_0').style.zIndex = 400;
+        var layer_OSMStandard_0 = L.tileLayer('http://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            pane: 'pane_OSMStandard_0',
+            opacity: 1.0,
+            attribution: '<a href="https://www.openstreetmap.org/copyright">© OpenStreetMap contributors, CC-BY-SA</a>',
+            minZoom: 1,
+            maxZoom: 28,
+            minNativeZoom: 0,
+            maxNativeZoom: 19
+        });
+        layer_OSMStandard_0;
+        map.addLayer(layer_OSMStandard_0);
+        function pop_Deslizamientos_1(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['landslide_'] !== null ? autolinker.link(feature.properties['landslide_'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['latitude'] !== null ? autolinker.link(feature.properties['latitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['longitude'] !== null ? autolinker.link(feature.properties['longitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">event_date</th>\
+                        <td>' + (feature.properties['event_date'] !== null ? autolinker.link(feature.properties['event_date'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>landslide</strong><br />' + (feature.properties['landslide'] !== null ? autolinker.link(feature.properties['landslide'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Deslizamientos_1_0() {
+            return {
+                pane: 'pane_Deslizamientos_1',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(36,0,0,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Deslizamientos_1');
+        map.getPane('pane_Deslizamientos_1').style.zIndex = 401;
+        map.getPane('pane_Deslizamientos_1').style['mix-blend-mode'] = 'normal';
+        var layer_Deslizamientos_1 = new L.geoJson(json_Deslizamientos_1, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Deslizamientos_1',
+            layerName: 'layer_Deslizamientos_1',
+            pane: 'pane_Deslizamientos_1',
+            onEachFeature: pop_Deslizamientos_1,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Deslizamientos_1_0(feature));
+            },
+        });
+        var cluster_Deslizamientos_1 = new L.MarkerClusterGroup({showCoverageOnHover: false,
+            spiderfyDistanceMultiplier: 2});
+        cluster_Deslizamientos_1.addLayer(layer_Deslizamientos_1);
+
+        bounds_group.addLayer(layer_Deslizamientos_1);
+        function pop_RandomForestSusceptibilidadClases_2(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['lr_value'] !== null ? autolinker.link(feature.properties['lr_value'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['_mean'] !== null ? autolinker.link(feature.properties['_mean'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['_min'] !== null ? autolinker.link(feature.properties['_min'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>class</strong><br />' + (feature.properties['class'] !== null ? autolinker.link(feature.properties['class'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['_max'] !== null ? autolinker.link(feature.properties['_max'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_RandomForestSusceptibilidadClases_2_0(feature) {
+            switch(String(feature.properties['class'])) {
+                case 'Muy Alto':
+                    return {
+                pane: 'pane_RandomForestSusceptibilidadClases_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(189,0,38,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Alto':
+                    return {
+                pane: 'pane_RandomForestSusceptibilidadClases_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(240,59,32,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Medio':
+                    return {
+                pane: 'pane_RandomForestSusceptibilidadClases_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(253,141,60,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Bajo':
+                    return {
+                pane: 'pane_RandomForestSusceptibilidadClases_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(254,204,92,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Muy Bajo':
+                    return {
+                pane: 'pane_RandomForestSusceptibilidadClases_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,255,178,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_RandomForestSusceptibilidadClases_2');
+        map.getPane('pane_RandomForestSusceptibilidadClases_2').style.zIndex = 402;
+        map.getPane('pane_RandomForestSusceptibilidadClases_2').style['mix-blend-mode'] = 'normal';
+        var layer_RandomForestSusceptibilidadClases_2 = new L.geoJson(json_RandomForestSusceptibilidadClases_2, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_RandomForestSusceptibilidadClases_2',
+            layerName: 'layer_RandomForestSusceptibilidadClases_2',
+            pane: 'pane_RandomForestSusceptibilidadClases_2',
+            onEachFeature: pop_RandomForestSusceptibilidadClases_2,
+            style: style_RandomForestSusceptibilidadClases_2_0,
+        });
+        bounds_group.addLayer(layer_RandomForestSusceptibilidadClases_2);
+        function pop_XGBoostSusceptibilidadClases_3(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['lr_value'] !== null ? autolinker.link(feature.properties['lr_value'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>_mean</strong><br />' + (feature.properties['_mean'] !== null ? autolinker.link(feature.properties['_mean'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['_min'] !== null ? autolinker.link(feature.properties['_min'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>class</strong><br />' + (feature.properties['class'] !== null ? autolinker.link(feature.properties['class'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['_max'] !== null ? autolinker.link(feature.properties['_max'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_XGBoostSusceptibilidadClases_3_0(feature) {
+            switch(String(feature.properties['class'])) {
+                case 'Muy Alto':
+                    return {
+                pane: 'pane_XGBoostSusceptibilidadClases_3',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(189,0,38,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Alto':
+                    return {
+                pane: 'pane_XGBoostSusceptibilidadClases_3',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(240,59,32,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Medio':
+                    return {
+                pane: 'pane_XGBoostSusceptibilidadClases_3',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(253,141,60,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Bajo':
+                    return {
+                pane: 'pane_XGBoostSusceptibilidadClases_3',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(254,204,92,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Muy Bajo':
+                    return {
+                pane: 'pane_XGBoostSusceptibilidadClases_3',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,255,178,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_XGBoostSusceptibilidadClases_3');
+        map.getPane('pane_XGBoostSusceptibilidadClases_3').style.zIndex = 403;
+        map.getPane('pane_XGBoostSusceptibilidadClases_3').style['mix-blend-mode'] = 'normal';
+        var layer_XGBoostSusceptibilidadClases_3 = new L.geoJson(json_XGBoostSusceptibilidadClases_3, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_XGBoostSusceptibilidadClases_3',
+            layerName: 'layer_XGBoostSusceptibilidadClases_3',
+            pane: 'pane_XGBoostSusceptibilidadClases_3',
+            onEachFeature: pop_XGBoostSusceptibilidadClases_3,
+            style: style_XGBoostSusceptibilidadClases_3_0,
+        });
+        bounds_group.addLayer(layer_XGBoostSusceptibilidadClases_3);
+        function pop_SupportVectorMachineSusceptibilidadClases_4(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['lr_value'] !== null ? autolinker.link(feature.properties['lr_value'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['_max'] !== null ? autolinker.link(feature.properties['_max'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>class</strong><br />' + (feature.properties['class'] !== null ? autolinker.link(feature.properties['class'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_SupportVectorMachineSusceptibilidadClases_4_0(feature) {
+            switch(String(feature.properties['class'])) {
+                case 'Muy Alto':
+                    return {
+                pane: 'pane_SupportVectorMachineSusceptibilidadClases_4',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(189,0,38,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Alto':
+                    return {
+                pane: 'pane_SupportVectorMachineSusceptibilidadClases_4',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(240,59,32,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Medio':
+                    return {
+                pane: 'pane_SupportVectorMachineSusceptibilidadClases_4',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(253,141,60,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Bajo':
+                    return {
+                pane: 'pane_SupportVectorMachineSusceptibilidadClases_4',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(254,204,92,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Muy Bajo':
+                    return {
+                pane: 'pane_SupportVectorMachineSusceptibilidadClases_4',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,255,178,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_SupportVectorMachineSusceptibilidadClases_4');
+        map.getPane('pane_SupportVectorMachineSusceptibilidadClases_4').style.zIndex = 404;
+        map.getPane('pane_SupportVectorMachineSusceptibilidadClases_4').style['mix-blend-mode'] = 'normal';
+        var layer_SupportVectorMachineSusceptibilidadClases_4 = new L.geoJson(json_SupportVectorMachineSusceptibilidadClases_4, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_SupportVectorMachineSusceptibilidadClases_4',
+            layerName: 'layer_SupportVectorMachineSusceptibilidadClases_4',
+            pane: 'pane_SupportVectorMachineSusceptibilidadClases_4',
+            onEachFeature: pop_SupportVectorMachineSusceptibilidadClases_4,
+            style: style_SupportVectorMachineSusceptibilidadClases_4_0,
+        });
+        bounds_group.addLayer(layer_SupportVectorMachineSusceptibilidadClases_4);
+        function pop_LogisticRegressionSusceptibilidadClases_5(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['lr_value'] !== null ? autolinker.link(feature.properties['lr_value'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['_mean'] !== null ? autolinker.link(feature.properties['_mean'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['_min'] !== null ? autolinker.link(feature.properties['_min'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>class</strong><br />' + (feature.properties['class'] !== null ? autolinker.link(feature.properties['class'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['_max'] !== null ? autolinker.link(feature.properties['_max'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_LogisticRegressionSusceptibilidadClases_5_0(feature) {
+            switch(String(feature.properties['class'])) {
+                case 'Muy Alto':
+                    return {
+                pane: 'pane_LogisticRegressionSusceptibilidadClases_5',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(189,0,38,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Alto':
+                    return {
+                pane: 'pane_LogisticRegressionSusceptibilidadClases_5',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(240,59,32,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Medio':
+                    return {
+                pane: 'pane_LogisticRegressionSusceptibilidadClases_5',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(253,141,60,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Bajo':
+                    return {
+                pane: 'pane_LogisticRegressionSusceptibilidadClases_5',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(254,204,92,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Muy Bajo':
+                    return {
+                pane: 'pane_LogisticRegressionSusceptibilidadClases_5',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,255,178,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_LogisticRegressionSusceptibilidadClases_5');
+        map.getPane('pane_LogisticRegressionSusceptibilidadClases_5').style.zIndex = 405;
+        map.getPane('pane_LogisticRegressionSusceptibilidadClases_5').style['mix-blend-mode'] = 'normal';
+        var layer_LogisticRegressionSusceptibilidadClases_5 = new L.geoJson(json_LogisticRegressionSusceptibilidadClases_5, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_LogisticRegressionSusceptibilidadClases_5',
+            layerName: 'layer_LogisticRegressionSusceptibilidadClases_5',
+            pane: 'pane_LogisticRegressionSusceptibilidadClases_5',
+            onEachFeature: pop_LogisticRegressionSusceptibilidadClases_5,
+            style: style_LogisticRegressionSusceptibilidadClases_5_0,
+        });
+        bounds_group.addLayer(layer_LogisticRegressionSusceptibilidadClases_5);
+        var osmGeocoder = new L.Control.Geocoder({
+            collapsed: true,
+            position: 'topleft',
+            text: 'Search',
+            title: 'Testing'
+        }).addTo(map);
+        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
+        .className += ' fa fa-search';
+        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
+        .title += 'Search for a place';
+        var baseMaps = {};
+        L.control.layers(baseMaps,{'Logistic Regression Susceptibilidad Clases<br /><table><tr><td style="text-align: center;"><img src="legend/LogisticRegressionSusceptibilidadClases_5_MuyAlto0.png" /></td><td>Muy Alto</td></tr><tr><td style="text-align: center;"><img src="legend/LogisticRegressionSusceptibilidadClases_5_Alto1.png" /></td><td>Alto</td></tr><tr><td style="text-align: center;"><img src="legend/LogisticRegressionSusceptibilidadClases_5_Medio2.png" /></td><td>Medio</td></tr><tr><td style="text-align: center;"><img src="legend/LogisticRegressionSusceptibilidadClases_5_Bajo3.png" /></td><td>Bajo</td></tr><tr><td style="text-align: center;"><img src="legend/LogisticRegressionSusceptibilidadClases_5_MuyBajo4.png" /></td><td>Muy Bajo</td></tr></table>': layer_LogisticRegressionSusceptibilidadClases_5,'Support Vector Machine Susceptibilidad Clases<br /><table><tr><td style="text-align: center;"><img src="legend/SupportVectorMachineSusceptibilidadClases_4_MuyAlto0.png" /></td><td>Muy Alto</td></tr><tr><td style="text-align: center;"><img src="legend/SupportVectorMachineSusceptibilidadClases_4_Alto1.png" /></td><td>Alto</td></tr><tr><td style="text-align: center;"><img src="legend/SupportVectorMachineSusceptibilidadClases_4_Medio2.png" /></td><td>Medio</td></tr><tr><td style="text-align: center;"><img src="legend/SupportVectorMachineSusceptibilidadClases_4_Bajo3.png" /></td><td>Bajo</td></tr><tr><td style="text-align: center;"><img src="legend/SupportVectorMachineSusceptibilidadClases_4_MuyBajo4.png" /></td><td>Muy Bajo</td></tr></table>': layer_SupportVectorMachineSusceptibilidadClases_4,'XGBoost Susceptibilidad Clases<br /><table><tr><td style="text-align: center;"><img src="legend/XGBoostSusceptibilidadClases_3_MuyAlto0.png" /></td><td>Muy Alto</td></tr><tr><td style="text-align: center;"><img src="legend/XGBoostSusceptibilidadClases_3_Alto1.png" /></td><td>Alto</td></tr><tr><td style="text-align: center;"><img src="legend/XGBoostSusceptibilidadClases_3_Medio2.png" /></td><td>Medio</td></tr><tr><td style="text-align: center;"><img src="legend/XGBoostSusceptibilidadClases_3_Bajo3.png" /></td><td>Bajo</td></tr><tr><td style="text-align: center;"><img src="legend/XGBoostSusceptibilidadClases_3_MuyBajo4.png" /></td><td>Muy Bajo</td></tr></table>': layer_XGBoostSusceptibilidadClases_3,'Random Forest Susceptibilidad Clases<br /><table><tr><td style="text-align: center;"><img src="legend/RandomForestSusceptibilidadClases_2_MuyAlto0.png" /></td><td>Muy Alto</td></tr><tr><td style="text-align: center;"><img src="legend/RandomForestSusceptibilidadClases_2_Alto1.png" /></td><td>Alto</td></tr><tr><td style="text-align: center;"><img src="legend/RandomForestSusceptibilidadClases_2_Medio2.png" /></td><td>Medio</td></tr><tr><td style="text-align: center;"><img src="legend/RandomForestSusceptibilidadClases_2_Bajo3.png" /></td><td>Bajo</td></tr><tr><td style="text-align: center;"><img src="legend/RandomForestSusceptibilidadClases_2_MuyBajo4.png" /></td><td>Muy Bajo</td></tr></table>': layer_RandomForestSusceptibilidadClases_2,'<img src="legend/Deslizamientos_1.png" /> Deslizamientos': cluster_Deslizamientos_1,"OSM Standard": layer_OSMStandard_0,}).addTo(map);
+        setBounds();
+        </script>
+    </body>
+</html>
